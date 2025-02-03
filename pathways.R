@@ -23,8 +23,6 @@ peakAnnoList <- lapply(peaks, annotatePeak, TxDb=txdb,
                        tssRegion=c(-3000, 3000), verbose=FALSE)
 
 
-if (FALSE)
-{
 genes = lapply(peakAnnoList, function(i) as.data.frame(i)$geneId)
 comp  <- compareCluster(
   geneCluster   = genes,
@@ -60,7 +58,6 @@ figure_name = paste("ZF", "KEGGpathways.pdf", sep="_")
 pdf(file =figure_name)
 dotplot(comp , showCategory = 10, title = "KEGG Pathway Enrichment Analysis") + theme(axis.text.x = element_text(size = 8)) 
 dev.off()
-}
 
 figure_name = paste("ZF", "AnnoPlot.pdf", sep="_")
 pdf(file =figure_name)
