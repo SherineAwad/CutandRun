@@ -1,7 +1,7 @@
 #---------------------------------------------------
 #General Parameters 
 #---------------------------------------------------
-SAMPLES: "samples.tsv"
+SAMPLES: "tsamples.tsv"
 MEMORY: "-Xmx40g" #for 20giga, change as much giga as you have 
 CORES: 8
 #------------------------------------------------------------------

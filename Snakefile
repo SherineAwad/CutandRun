@@ -1,7 +1,6 @@
 with open(config['SAMPLES']) as fp:
     samples = fp.read().splitlines()
-
-TREATMENT_SAMPLES = ["ZF1", "ZF2", "ZF3", "ZF4", "ZF5", "ZF6", "ZF8", "ZF9", "ZF10", "ZF11", "ZF12"]
+TREATMENT_SAMPLES = ["ZF2","ZF4", "ZF6", "ZF8"]
 CONTROL_SAMPLE = "ZF7"
 
 rule all:
@@ -21,8 +20,8 @@ rule all:
             expand("Motif_{sample}/seq.autonorm.tsv", sample=TREATMENT_SAMPLES),
             expand("{sample}.bw", sample=TREATMENT_SAMPLES),
             expand("{sample}.bed",sample = CONTROL_SAMPLE),
-            expand("{sample}_QC.bed",sample = CONTROL_SAMPLE),
-            expand("{sample}_QC.bed",sample=TREATMENT_SAMPLES),
+            expand("{sample}_QC.pdf",sample = CONTROL_SAMPLE),
+            expand("{sample}_QC.pdf",sample=TREATMENT_SAMPLES),
             "merged_peaks.narrowPeak",
             "merged_KEGGpathways.pdf" 
 rule trim: 
@@ -121,12 +120,14 @@ rule macs_bed:
     input:
         "{sample}.sorted.rmDup.bam",
         expand("{sample}.sorted.rmDup.bam", sample =CONTROL_SAMPLE) 
+    params: 
+        "{sample}"
     output:
         "macs/{sample}_peaks.narrowPeak",
          "macs/{sample}_summits.bed"
     shell:
         """
-        macs2 callpeak -t {input[0]} -c {input[1]} -f BAMPE -g mm --outdir macs -n {output[0]}
+        macs2 callpeak -t {input[0]} -c {input[1]} -f BAMPE -g mm --outdir macs -n {params}
         """
 
 
@@ -174,10 +175,10 @@ rule Control_QCheatmap:
          expand("{sample}.bw",sample = CONTROL_SAMPLE)
       output: 
            expand("{sample}.bed",sample = CONTROL_SAMPLE),
-           expand("{sample}_QC.bed",sample = CONTROL_SAMPLE) 
+           expand("{sample}_QC.pdf",sample = CONTROL_SAMPLE) 
       shell: 
           """
-            bedtools bamtobed -i {input} > {output[0]}
+            #bedtools bamtobed -i {input} > {output[0]}
             Rscript hm.R {output[0]} {input[1]} 
           """          
 rule QCheatmap: 
@@ -185,7 +186,7 @@ rule QCheatmap:
         "macs/{sample}_summits.bed",
         "{sample}.bw" 
      output: 
-        "{sample}_QC.bed"
+        "{sample}_QC.pdf"
      shell: 
         """
          Rscript hm.R {input[0]} {input[1]} 

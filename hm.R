@@ -18,7 +18,7 @@ BigWig <- rtracklayer::import(bw,
                               format = "BigWig", selection = BigWigSelection(targets.extended))
 normMatrix <- normalizeToMatrix(signal = BigWig, target = resize(targets, fix = "center", width = 1),  background = 0, keep = c(0, 0.99),  target_ratio = 0, mean_mode = "w0",  value_column = "score", extend = ExtendSize)
 
-col_fun <- colorRamp2(c(0, 30), c("darkblue", "darkgoldenrod1")) 
+col_fun <- colorRamp2(c(0, 15), c("darkblue", "darkgoldenrod1")) 
 
 
 title = paste(mysample, " Heatmap", sep =" ") 
