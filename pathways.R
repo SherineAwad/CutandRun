@@ -39,8 +39,6 @@ outfile = paste(sample, "compareClusterResult.csv", sep="_")
 
 write.csv(comp_df, outfile, row.names = FALSE)
 
-if(FALSE)
-{
 #Remove the  - Mus musculus (house mouse suffix 
 comp@compareClusterResult$Description <- gsub(" - Mus musculus \\(house mouse\\)", "", comp@compareClusterResult$Description)
 #Plot selected pathways
@@ -59,6 +57,5 @@ figure_name = paste("ZF", "KEGGpathways.pdf", sep="_")
 pdf(file =figure_name)
 dotplot(comp , showCategory = 10, title = "KEGG Pathway Enrichment Analysis") + theme(axis.text.x = element_text(size = 8)) 
 dev.off()
-}
 
 
